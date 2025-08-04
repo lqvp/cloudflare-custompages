@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>接続の安全性を確認しています...</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-lightest: #f3f7f9;
+            --color-light-green: #ddefe3;
+            --color-mid-green: #9ecda5;
+            --color-dark-green: #41956a;
+            --text-primary: #1e2923;
+            --text-secondary: #314d39;
+            --text-muted: #587c65;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(209, 239, 227, 0.5);
+            --shadow-soft: rgba(65, 149, 106, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--color-lightest) 0%, var(--color-light-green) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bg-pattern {
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: radial-gradient(circle at 20% 20%, var(--color-mid-green), transparent 30%), radial-gradient(circle at 80% 80%, var(--color-dark-green), transparent 30%);
+            opacity: 0.1; animation: rotateBackground 60s linear infinite; z-index: 0;
+        }
+        @keyframes rotateBackground { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .container { position: relative; z-index: 1; max-width: 650px; width: 100%; }
+        .challenge-card {
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 32px; padding: 50px; text-align: center;
+            box-shadow: 0 32px 64px var(--shadow-soft);
+            animation: slideUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            opacity: 0; transform: translateY(30px); position: relative; overflow: hidden;
+        }
+        .challenge-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--color-mid-green), var(--color-dark-green));
+            border-radius: 32px 32px 0 0;
+        }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        .spinner {
+            width: 50px; height: 50px; margin: 0 auto 25px;
+            border: 5px solid var(--color-light-green); border-top-color: var(--color-dark-green);
+            border-radius: 50%; animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+        .subtitle { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 30px; }
+        .widget-box { margin-bottom: 25px; padding: 20px; background: rgba(255, 255, 255, 0.5); border-radius: 16px; border: 1px solid var(--glass-border); min-height: 90px; }
+        .debug-details { margin-bottom: 25px; }
+        .debug-summary {
+            cursor: pointer; font-weight: 500; color: var(--text-muted); list-style: none;
+            display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s ease;
+        }
+        .debug-summary::-webkit-details-marker { display: none; }
+        .debug-summary:hover { color: var(--text-primary); }
+        .debug-summary .icon { transition: transform 0.3s ease-in-out; }
+        .debug-details[open] .debug-summary .icon { transform: rotate(90deg); }
+        .debug-content {
+            font-family: 'Menlo', 'Courier New', monospace; font-size: 0.8rem; text-align: left; margin-top: 15px;
+            background: rgba(243, 247, 249, 0.7); border-radius: 12px; border: 1px solid var(--glass-border);
+            color: var(--text-secondary); overflow: hidden; max-height: 0; opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.5s ease, padding 0.5s ease;
+        }
+        .debug-details[open] > .debug-content { max-height: 500px; opacity: 1; padding: 15px; }
+        .debug-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--glass-border); }
+        .debug-item:last-child { border-bottom: none; }
+        .debug-item .label { font-weight: 600; color: var(--text-primary); }
+        .footer { margin-top: 25px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+        .footer p { margin-bottom: 8px; }
+        .footer p:last-child { margin-bottom: 0; }
+        .footer a { color: var(--color-dark-green); text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
+        .footer a:hover { color: var(--text-primary); }
+        .support-link {
+            display: inline-block; margin-top: 10px; color: var(--text-muted); cursor: pointer;
+            font-size: 0.85rem; transition: color 0.3s ease;
+            padding: 10px 20px;
+        }
+        .support-link:hover { color: var(--text-primary); }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(30, 41, 35, 0.4); z-index: 1000;
+            backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .modal-content {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 40px; max-width: 500px; width: 90%;
+            text-align: center; color: var(--text-primary); box-shadow: 0 32px 64px var(--shadow-soft);
+            animation: slideInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: relative;
+        }
+        .modal-content h3 { margin-bottom: 16px; font-size: 1.6rem; font-family: 'Playfair Display', serif; }
+        .modal-content p { margin-bottom: 24px; line-height: 1.6; color: var(--text-secondary); }
+        .contact-info { margin-bottom: 24px; padding: 12px; background: linear-gradient(135deg, var(--color-lightest), var(--color-light-green)); border-radius: 12px; font-weight: 500; }
+        .close-btn {
+            background: linear-gradient(135deg, var(--color-mid-green), var(--color-dark-green)); color: white;
+            border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 500;
+            transition: all 0.3s ease; box-shadow: 0 4px 12px var(--shadow-soft);
+        }
+        .close-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-medium); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @media (max-width: 600px) {
+            .container, .challenge-card { padding: 15px; }
+            .title { font-size: 1.8rem; } .subtitle { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="container">
+        <div class="challenge-card">
+            <div class="spinner"></div>
+            <h1 class="title">接続の安全性を確認しています</h1>
+            <p class="subtitle">このプロセスは自動で行われ、数秒で完了します。</p>
+            <div class="widget-box"> ::CF_WIDGET_BOX:: </div>
+            <details class="debug-details">
+                <summary class="debug-summary">
+                    <span class="icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+                    Debug Info
+                </summary>
+                <div class="debug-content">
+                    <div class="debug-item"><span class="label">Ray ID:</span><span class="value">::RAY_ID::</span></div>
+                    <div class="debug-item"><span class="label">Your IP:</span><span class="value">::CLIENT_IP::</span></div>
+                    <div class="debug-item"><span class="label">Country:</span><span class="value">::GEO::</span></div>
+                </div>
+            </details>
+            <div class="footer">
+                <a href="#" class="support-link">サポートに連絡</a>
+                <p>&copy; 2025 <a href="https://misskey.vip" target="_blank">misskey.vip</a>. All rights reserved.</p>
+                <p>This site is protected by <a href="https://www.cloudflare.com/ja-jp/" target="_blank" rel="noopener">Cloudflare</a>.</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <h3>サポートに連絡</h3>
+            <p>チャレンジが解決しない場合は、以下の連絡先までお問い合わせください。</p>
+            <div class="contact-info"><strong>Email:</strong> support@misskey.vip</div>
+            <button class="close-btn">閉じる</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.debug-details').forEach(details => {
+                const summary = details.querySelector('.debug-summary');
+                summary.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    details.open ? details.removeAttribute('open') : details.setAttribute('open', '');
+                });
+            });
+
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const supportLink = document.querySelector('.support-link');
+            const closeBtn = document.querySelector('.close-btn');
+
+            const openModal = () => { modalOverlay.style.display = 'flex'; };
+            const closeModal = () => {
+                modalOverlay.style.animation = 'fadeOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    modalOverlay.style.display = 'none';
+                    modalOverlay.style.animation = 'fadeIn 0.3s ease-out';
+                }, 300);
+            };
+
+            supportLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+            closeBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+        });
+    </script>
+</body>
+</html>
