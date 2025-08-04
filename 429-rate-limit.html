@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>レート制限 - 429 Too Many Requests</title>
+    <style>
+      :root {
+        --color-light-pink: #f2a7a3;
+        --color-brown: #976653;
+        --color-dark-brown: #403020;
+        --color-pale-pink: #f5c4c8;
+        --text-primary: var(--color-dark-brown);
+        --text-secondary: #745f56;
+        --background-gradient-start: #fdf6f6;
+        --background-gradient-end: #f7e9e9;
+        --glass-bg: rgba(245, 196, 200, 0.2);
+        --glass-border: rgba(242, 167, 163, 0.5);
+        --shadow-soft: rgba(64, 48, 32, 0.08);
+        --shadow-medium: rgba(64, 48, 32, 0.12);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+          "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-gradient-start) 0%,
+          var(--background-gradient-end) 100%
+        );
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+        line-height: 1.6;
+      }
+
+      .bg-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .shape {
+        position: absolute;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        background: var(--color-light-pink);
+        opacity: 0.3;
+        animation: morph-and-float 30s infinite ease-in-out;
+      }
+
+      .shape:nth-child(1) {
+        width: 400px;
+        height: 400px;
+        top: -50px;
+        left: -100px;
+        animation-delay: -5s;
+      }
+
+      .shape:nth-child(2) {
+        width: 300px;
+        height: 300px;
+        top: 50%;
+        right: -150px;
+        background-color: var(--color-pale-pink);
+        animation-delay: -15s;
+        animation-duration: 40s;
+      }
+
+      .shape:nth-child(3) {
+        width: 250px;
+        height: 250px;
+        bottom: -80px;
+        left: 20%;
+        background-color: var(--color-brown);
+        animation-delay: -25s;
+      }
+
+      @keyframes morph-and-float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg) scale(1);
+          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        25% {
+          transform: translateY(-40px) rotate(90deg) scale(1.1);
+          border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+        }
+        50% {
+          transform: translateY(20px) rotate(180deg) scale(0.9);
+          border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        }
+        75% {
+          transform: translateY(-20px) rotate(270deg) scale(1.05);
+          border-radius: 30% 70% 50% 50% / 30% 30% 70% 70%;
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .rate-limit-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--glass-border);
+        border-radius: 32px;
+        padding: 70px 60px;
+        text-align: center;
+        box-shadow: 0 32px 64px var(--shadow-soft);
+        animation: fadeInScale 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        opacity: 0;
+        transform: scale(0.95);
+        width: 100%;
+      }
+
+      @keyframes fadeInScale {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .icon-header {
+        margin-bottom: 30px;
+      }
+
+      .icon-header svg {
+        width: 60px;
+        height: 60px;
+        color: var(--color-brown);
+        stroke-width: 1.5;
+        animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.1);
+        }
+        80% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .title {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+      }
+
+      .message {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        margin-bottom: 40px;
+        color: var(--text-secondary);
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .info-box {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
+        text-align: left;
+      }
+
+      .info-box h3 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        font-size: 1rem;
+      }
+
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.4);
+        padding: 12px 15px;
+        border-radius: 10px;
+      }
+
+      .info-item span:first-child {
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .info-item span:last-child {
+        font-family: monospace;
+        background: rgba(242, 167, 163, 0.2);
+        padding: 5px 8px;
+        border-radius: 6px;
+        user-select: all;
+      }
+
+      .copy-ray-id {
+        margin-top: 20px;
+        background: transparent;
+        border: 2px solid var(--color-brown);
+        color: var(--color-brown);
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .copy-ray-id:hover {
+        background: var(--color-brown);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .footer {
+        margin-top: 50px;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .footer a {
+        color: var(--text-primary);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px solid var(--color-pale-pink);
+        transition: all 0.3s ease;
+      }
+
+      .footer a:hover {
+        border-bottom-color: var(--color-brown);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+        .rate-limit-card {
+          padding: 40px 30px;
+        }
+        .title {
+          font-size: 2.2rem;
+        }
+        .message {
+          font-size: 1rem;
+        }
+        .countdown-timer {
+          font-size: 2.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+
+    <div class="container">
+      <div class="rate-limit-card">
+        <div class="icon-header">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h1 class="title">アクセスが一時的に制限されています</h1>
+        <p class="message">
+          短時間に多くのリクエストが送信されたため、このページへのアクセスは一時的にブロックされています。
+          しばらくしてから再度お試しください。
+        </p>
+
+        <div class="info-box">
+          <h3>詳細情報</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span>あなたのIPアドレス</span>
+              <span id="ip-address">::IP_ADDRESS::</span>
+            </div>
+            <div class="info-item">
+              <span>あなたの位置</span>
+              <span id="geo">::GEO::</span>
+            </div>
+            <div class="info-item">
+              <span>Ray ID</span>
+              <span id="ray-id">::RAY_ID::</span>
+            </div>
+          </div>
+          <button class="copy-ray-id" onclick="copyRayId()">
+            Ray IDをコピー
+          </button>
+        </div>
+
+        <div class="footer">
+          <p>
+            &copy; 2025
+            <a href="https://misskey.vip" target="_blank">misskey.vip</a>. All
+            rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- DOM Elements ---
+        const ipElement = document.getElementById("ip-address");
+        const geoElement = document.getElementById("geo");
+        const rayIdElement = document.getElementById("ray-id");
+
+        // --- Token Handling ---
+        function sanitizeToken(element, fallbackText = "N/A") {
+          if (!element || element.textContent.includes("::")) {
+            if (element) {
+              element.textContent = fallbackText;
+            }
+            return null;
+          }
+          return element.textContent;
+        }
+
+        sanitizeToken(ipElement, "非公開");
+        sanitizeToken(geoElement, "非公開");
+        sanitizeToken(rayIdElement, "利用不可");
+      });
+
+      // --- Copy to Clipboard ---
+      function copyRayId() {
+        const rayIdElement = document.getElementById("ray-id");
+        if (!rayIdElement) return;
+
+        const rayId = rayIdElement.textContent;
+        const copyButton = document.querySelector(".copy-ray-id");
+        if (!copyButton) return;
+
+        if (rayId === "利用不可") {
+          updateButtonState(copyButton, "コピー失敗", false);
+          return;
+        }
+
+        navigator.clipboard
+          .writeText(rayId)
+          .then(() => {
+            updateButtonState(copyButton, "コピーしました！", true);
+          })
+          .catch((err) => {
+            console.error("Ray IDのコピーに失敗しました:", err);
+            updateButtonState(copyButton, "コピー失敗", false);
+          });
+      }
+
+      function updateButtonState(button, text, success) {
+        const originalText = "Ray IDをコピー";
+        button.textContent = text;
+
+        if (success) {
+          button.style.background = "var(--color-brown)";
+          button.style.color = "white";
+        } else {
+          button.style.borderColor = "#d9534f";
+          button.style.color = "#d9534f";
+        }
+
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = "transparent";
+          button.style.color = "var(--color-brown)";
+          button.style.borderColor = "var(--color-brown)";
+        }, 2500);
+      }
+    </script>
+  </body>
+</html>
