@@ -62,7 +62,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
         .subtitle { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 30px; }
-        .widget-box { margin-bottom: 25px; padding: 20px; background: rgba(255, 255, 255, 0.5); border-radius: 16px; border: 1px solid var(--glass-border); min-height: 90px; }
+        .widget-box { margin-bottom: 25px; padding: 20px; background: rgba(255, 255, 255, 0.5); border-radius: 16px; border: 1px solid var(--glass-border); min-height: 90px; display: flex; justify-content: center; align-items: center; }
         .debug-details { margin-bottom: 25px; }
         .debug-summary {
             cursor: pointer; font-weight: 500; color: var(--text-muted); list-style: none;
@@ -121,6 +121,12 @@
         @media (max-width: 600px) {
             .container, .challenge-card { padding: 15px; }
             .title { font-size: 1.8rem; } .subtitle { font-size: 1rem; }
+        }
+        .widget-box h1,
+        .widget-box h2#challenge-running,
+        .widget-box #challenge-body-text,
+        .widget-box .footer {
+            display: none;
         }
     </style>
 </head>
