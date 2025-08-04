@@ -86,8 +86,44 @@
         }
 
         .icon svg { width: 28px; height: 28px; stroke: var(--text-primary); stroke-width: 2.5; }
-        .title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
-        .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        
+        /* Styles for Cloudflare's injected content */
+        .cf-error-details {
+            margin-bottom: 25px;
+        }
+        .cf-error-details h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        .cf-error-details p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        .cf-error-details a {
+             color: var(--color-sage-green);
+             text-decoration: none;
+             font-weight: 600;
+        }
+        .cf-error-details a:hover {
+            text-decoration: underline;
+        }
+        .cf-error-details ul {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 550px;
+            list-style-position: inside;
+        }
+        .cferror_details {
+            display: none !important; /* Hide original details list */
+        }
         
         .guidance-text { color: var(--text-secondary); margin-top: 30px; font-size: 1rem; }
         
@@ -120,7 +156,6 @@
         .footer a { color: var(--color-sage-green); text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
         .footer a:hover { color: var(--text-primary); }
         
-        /* Modal Styles */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(61, 64, 58, 0.4); z-index: 1000; backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; animation: fadeIn 0.3s ease-out; }
         .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; max-width: 500px; width: 90%; text-align: center; color: var(--text-primary); box-shadow: 0 32px 64px var(--shadow-soft); animation: slideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: relative; }
         .modal-content h3 { margin-bottom: 16px; font-size: 1.6rem; font-family: 'Playfair Display', serif; }
@@ -135,8 +170,8 @@
         @media (max-width: 600px) {
             body { padding: 15px; }
             .info-card { padding: 30px 25px; }
-            .title { font-size: 2rem; }
-            .subtitle { font-size: 1rem; }
+            .cf-error-details h1 { font-size: 2rem; }
+            .cf-error-details p { font-size: 1rem; }
             .debug-item { flex-direction: column; align-items: flex-start; gap: 8px; }
         }
     </style>
@@ -152,14 +187,12 @@
                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
             </div>
-            <h1 class="title">リクエストを完了できません</h1>
-            <p class="subtitle">サーバーまたはネットワークの構成に問題があるため、リクエストを処理できませんでした。</p>
-
+            
             ::CLOUDFLARE_ERROR_1000S_BOX::
 
             <p class="guidance-text">問題が解決しない場合、サイト管理者へのお問い合わせの際に、以下の情報をお伝えいただくとスムーズです。</p>
             
-            <details class="details-box" open>
+            <details class="details-box">
                 <summary class="details-summary" id="details-summary">
                     <span class="caret">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -167,37 +200,8 @@
                     Technical Details
                 </summary>
                 <div class="details-content-wrapper">
-                    <div class="details-content" aria-labelledby="details-summary">
-                        <div class="debug-item">
-                            <span class="label">Ray ID:</span>
-                            <span class="value">
-                                <span id="ray-id">::RAY_ID::</span>
-                                <button class="copy-btn" aria-label="Copy Ray ID">
-                                    <span class="tooltip">Copied!</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                </button>
-                            </span>
-                        </div>
-                        <div class="debug-item">
-                            <span class="label">Your IP:</span>
-                             <span class="value">
-                                <span id="client-ip">::CLIENT_IP::</span>
-                                <button class="copy-btn" aria-label="Copy IP Address">
-                                    <span class="tooltip">Copied!</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                </button>
-                            </span>
-                        </div>
-                        <div class="debug-item">
-                            <span class="label">Country:</span>
-                             <span class="value">
-                                <span id="geo">::GEO::</span>
-                                <button class="copy-btn" aria-label="Copy Country">
-                                    <span class="tooltip">Copied!</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                </button>
-                            </span>
-                        </div>
+                    <div class="details-content" id="details-content-container" aria-labelledby="details-summary">
+                        <!-- Dynamic content will be inserted here -->
                     </div>
                 </div>
             </details>
@@ -224,49 +228,85 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const details = document.querySelector('.details-box');
+            const detailsBox = document.querySelector('.details-box');
             const summary = document.querySelector('.details-summary');
             const contentWrapper = document.querySelector('.details-content-wrapper');
+            const detailsContentContainer = document.getElementById('details-content-container');
 
-            if (details.hasAttribute('open')) {
-                contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
-                contentWrapper.style.opacity = '1';
-            }
+            // Function to parse and display Cloudflare error details
+            const renderCfDetails = () => {
+                const cfErrorList = document.querySelector('.cferror_details');
+                if (!cfErrorList) {
+                    detailsBox.style.display = 'none'; // Hide if no details found
+                    return;
+                }
 
+                let detailsHtml = '';
+                cfErrorList.querySelectorAll('li').forEach(li => {
+                    const text = li.textContent.trim();
+                    const parts = text.split(':');
+                    if (parts.length < 2) return;
+                    
+                    const label = parts[0].trim();
+                    const value = parts.slice(1).join(':').trim();
+                    const id = label.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+                    detailsHtml += `
+                        <div class="debug-item">
+                            <span class="label">${label}:</span>
+                            <span class="value">
+                                <span id="${id}">${value}</span>
+                                <button class="copy-btn" aria-label="Copy ${label}">
+                                    <span class="tooltip">Copied!</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </span>
+                        </div>
+                    `;
+                });
+                detailsContentContainer.innerHTML = detailsHtml;
+                detailsBox.removeAttribute('open'); // Start closed
+            };
+
+            // Accordion animation
             summary.addEventListener('click', (event) => {
                 event.preventDefault();
-                if (details.open) {
+                if (detailsBox.open) {
                     contentWrapper.style.maxHeight = null;
                     contentWrapper.style.opacity = '0';
-                    details.removeAttribute('open');
+                    detailsBox.removeAttribute('open');
                 } else {
-                    details.setAttribute('open', '');
+                    detailsBox.setAttribute('open', '');
                     contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
                     contentWrapper.style.opacity = '1';
                 }
             });
-
-            document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const valueSpan = button.parentElement.querySelector('span:first-child');
-                    const textToCopy = valueSpan.innerText;
-                    
-                    navigator.clipboard.writeText(textToCopy).then(() => {
-                        button.classList.add('copied');
-                        setTimeout(() => {
-                            button.classList.remove('copied');
-                        }, 1500);
-                    }).catch(err => {
-                        console.error('Failed to copy: ', err);
+            
+            // Wait for Cloudflare to potentially inject content
+            setTimeout(() => {
+                renderCfDetails();
+                // Re-attach copy listeners after content is rendered
+                document.querySelectorAll('.copy-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const valueSpan = button.parentElement.querySelector('span:first-child');
+                        const textToCopy = valueSpan.innerText;
+                        
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            button.classList.add('copied');
+                            setTimeout(() => {
+                                button.classList.remove('copied');
+                            }, 1500);
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
                     });
                 });
-            });
+            }, 100); // Small delay to allow injection
 
             // Modal functionality
             const modalOverlay = document.querySelector('.modal-overlay');
             const supportLink = document.querySelector('.support-link');
             const closeBtn = document.querySelector('.close-btn');
-
             const openModal = () => { modalOverlay.style.display = 'flex'; };
             const closeModal = () => {
                 modalOverlay.style.animation = 'fadeOut 0.3s ease-in forwards';
@@ -275,7 +315,6 @@
                     modalOverlay.style.animation = 'fadeIn 0.3s ease-out';
                 }, 300);
             };
-
             supportLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
             closeBtn.addEventListener('click', closeModal);
             modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
