@@ -154,36 +154,6 @@
             opacity: 0.9;
         }
 
-        .error-details {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            font-weight: 500;
-            opacity: 0.8;
-        }
-
-        .detail-value {
-            font-weight: 300;
-            font-family: 'Courier New', monospace;
-        }
-
         .action-buttons {
             display: flex;
             gap: 20px;
@@ -503,22 +473,6 @@
             <!-- Cloudflare Error Details -->
             ::CLOUDFLARE_ERROR_500S_BOX::
 
-            <!-- Error details -->
-            <div class="error-details">
-                <div class="detail-item">
-                    <span class="detail-label">Location:</span>
-                    <span class="detail-value">::GEO::</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">リクエストID:</span>
-                    <span class="detail-value">::RAY_ID::</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">IPアドレス:</span>
-                    <span class="detail-value">::CLIENT_IP::</span>
-                </div>
-            </div>
-
             <!-- Action buttons -->
             <div class="action-buttons">
                 <button class="btn btn-primary" onclick="window.location.reload()">
@@ -609,15 +563,6 @@
 
             // Add smooth scroll behavior
             document.documentElement.style.scrollBehavior = 'smooth';
-
-            // Add error tracking (if analytics is available)
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'error_page_view', {
-                    'error_code': '{{cf_error_code}}',
-                    'error_type': '{{cf_error_type}}',
-                    'page_location': window.location.href
-                });
-            }
         });
 
         // Contact info modal
