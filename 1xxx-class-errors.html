@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リクエストを完了できません - 1XXX Status</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-lightest: #DFDCD6;
+            --color-sage-green: #8A9174;
+            --color-dusty-rose: #C9A898;
+            --color-muted-gold: #C6925D;
+            --color-background: #F7F5F2;
+            --text-primary: #3D403A;
+            --text-secondary: #5A5E54;
+            --text-muted: #8B8E85;
+            --glass-bg: rgba(223, 220, 214, 0.7);
+            --glass-border: rgba(138, 145, 116, 0.3);
+            --shadow-soft: rgba(138, 145, 116, 0.1);
+            --shadow-medium: rgba(138, 145, 116, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--color-background) 0%, var(--color-lightest) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .bg-pattern {
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, var(--color-sage-green), transparent 30%), 
+                radial-gradient(circle at 80% 80%, var(--color-dusty-rose), transparent 30%),
+                radial-gradient(circle at 50% 50%, var(--color-muted-gold), transparent 35%);
+            opacity: 0.15;
+            animation: rotateBackground 90s linear infinite;
+        }
+        @keyframes rotateBackground { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .container { max-width: 800px; width: 100%; }
+
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 32px 64px var(--shadow-soft);
+            animation: slideUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(90deg, var(--color-sage-green), var(--color-dusty-rose), var(--color-muted-gold));
+        }
+
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+        .icon {
+            width: 60px; height: 60px; margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--color-sage-green), var(--color-lightest));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px var(--shadow-soft);
+        }
+
+        .icon svg { width: 28px; height: 28px; stroke: var(--text-primary); stroke-width: 2.5; }
+        .title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        
+        .guidance-text { color: var(--text-secondary); margin-bottom: 20px; font-size: 1rem; }
+        
+        ::CLOUDFLARE_ERROR_1000S_BOX::
+
+        .details-box { margin: 30px 0; background: rgba(255, 255, 255, 0.5); border-radius: 16px; border: 1px solid var(--glass-border); overflow: hidden; }
+        .details-summary { cursor: pointer; font-weight: 600; color: var(--text-secondary); list-style: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: color 0.3s ease; padding: 25px; }
+        .details-summary::-webkit-details-marker { display: none; }
+        .details-summary:hover { color: var(--text-primary); }
+        .details-summary .caret { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .details-box[open] .details-summary .caret { transform: rotate(90deg); }
+
+        .details-content-wrapper { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease-in-out; opacity: 0; }
+        .details-content { font-family: 'Menlo', 'Courier New', monospace; font-size: 0.9rem; text-align: left; padding: 0 25px 25px; color: var(--text-secondary); }
+        .debug-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--glass-border); transition: background-color 0.2s ease; }
+        .debug-item:last-child { border-bottom: none; }
+        .debug-item:hover { background-color: rgba(255,255,255,0.4); }
+        .debug-item .label { font-weight: 600; color: var(--text-primary); }
+        .debug-item .value { display: flex; align-items: center; gap: 10px; word-break: break-all; }
+        
+        .copy-btn { background: none; border: none; cursor: pointer; padding: 5px; border-radius: 5px; transition: all 0.2s ease; position: relative; }
+        .copy-btn:hover { background-color: var(--glass-border); }
+        .copy-btn svg { width: 16px; height: 16px; stroke: var(--text-secondary); }
+        .copy-btn .tooltip { position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background-color: var(--text-primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; }
+        .copy-btn.copied .tooltip { opacity: 1; visibility: visible; }
+
+        .actions { margin-top: 30px; }
+        .btn { background: var(--color-sage-green); color: var(--color-background); border: none; padding: 14px 28px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; box-shadow: 0 4px 12px var(--shadow-soft); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-medium); background: var(--text-primary); }
+
+        .footer { margin-top: 30px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+        .footer a { color: var(--color-sage-green); text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
+        .footer a:hover { color: var(--text-primary); }
+        
+        /* Modal Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(61, 64, 58, 0.4); z-index: 1000; backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; animation: fadeIn 0.3s ease-out; }
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; max-width: 500px; width: 90%; text-align: center; color: var(--text-primary); box-shadow: 0 32px 64px var(--shadow-soft); animation: slideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1); position: relative; }
+        .modal-content h3 { margin-bottom: 16px; font-size: 1.6rem; font-family: 'Playfair Display', serif; }
+        .modal-content p { margin-bottom: 24px; line-height: 1.6; color: var(--text-secondary); }
+        .contact-info { margin-bottom: 24px; padding: 12px; background: linear-gradient(135deg, var(--color-background), var(--color-lightest)); border-radius: 12px; font-weight: 500; }
+        .close-btn { background: linear-gradient(135deg, var(--color-sage-green), var(--color-dusty-rose)); color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 4px 12px var(--shadow-soft); }
+        .close-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-medium); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        @media (max-width: 600px) {
+            body { padding: 15px; }
+            .info-card { padding: 30px 25px; }
+            .title { font-size: 2rem; }
+            .subtitle { font-size: 1rem; }
+            .debug-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="container">
+        <div class="info-card">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <h1 class="title">リクエストを完了できません</h1>
+            <p class="subtitle">サーバーまたはネットワークの構成に問題があるため、リクエストを処理できませんでした。</p>
+
+            <p class="guidance-text">問題が解決しない場合、サイト管理者へのお問い合わせの際に、以下の情報をお伝えいただくとスムーズです。</p>
+            
+            <details class="details-box" open>
+                <summary class="details-summary" id="details-summary">
+                    <span class="caret">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </span>
+                    Technical Details
+                </summary>
+                <div class="details-content-wrapper">
+                    <div class="details-content" aria-labelledby="details-summary">
+                        <div class="debug-item">
+                            <span class="label">Ray ID:</span>
+                            <span class="value">
+                                <span id="ray-id">::RAY_ID::</span>
+                                <button class="copy-btn" aria-label="Copy Ray ID">
+                                    <span class="tooltip">Copied!</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="debug-item">
+                            <span class="label">Your IP:</span>
+                             <span class="value">
+                                <span id="client-ip">::CLIENT_IP::</span>
+                                <button class="copy-btn" aria-label="Copy IP Address">
+                                    <span class="tooltip">Copied!</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="debug-item">
+                            <span class="label">Country:</span>
+                             <span class="value">
+                                <span id="geo">::GEO::</span>
+                                <button class="copy-btn" aria-label="Copy Country">
+                                    <span class="tooltip">Copied!</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            
+            <div class="actions">
+                <button class="btn support-link">サポートに連絡</button>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2025 <a href="https://misskey.vip" target="_blank">misskey.vip</a>. All rights reserved.</p>
+                <p>This site is protected by <a href="https://www.cloudflare.com/ja-jp/" target="_blank" rel="noopener">Cloudflare</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <h3>サポートに連絡</h3>
+            <p>問題が解決しない場合は、以下の連絡先までお問い合わせください。その際、上記のエラー詳細を併せてお伝えいただくと、スムーズに対応できます。</p>
+            <div class="contact-info"><strong>Email:</strong> support@misskey.vip</div>
+            <button class="close-btn">閉じる</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const details = document.querySelector('.details-box');
+            const summary = document.querySelector('.details-summary');
+            const contentWrapper = document.querySelector('.details-content-wrapper');
+
+            if (details.hasAttribute('open')) {
+                contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+                contentWrapper.style.opacity = '1';
+            }
+
+            summary.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (details.open) {
+                    contentWrapper.style.maxHeight = null;
+                    contentWrapper.style.opacity = '0';
+                    details.removeAttribute('open');
+                } else {
+                    details.setAttribute('open', '');
+                    contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+                    contentWrapper.style.opacity = '1';
+                }
+            });
+
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const valueSpan = button.parentElement.querySelector('span:first-child');
+                    const textToCopy = valueSpan.innerText;
+                    
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            button.classList.remove('copied');
+                        }, 1500);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+                });
+            });
+
+            // Modal functionality
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const supportLink = document.querySelector('.support-link');
+            const closeBtn = document.querySelector('.close-btn');
+
+            const openModal = () => { modalOverlay.style.display = 'flex'; };
+            const closeModal = () => {
+                modalOverlay.style.animation = 'fadeOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    modalOverlay.style.display = 'none';
+                    modalOverlay.style.animation = 'fadeIn 0.3s ease-out';
+                }, 300);
+            };
+
+            supportLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+            closeBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+        });
+    </script>
+</body>
+</html>
