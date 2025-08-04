@@ -395,6 +395,83 @@
             padding-right: 15px;
         }
 
+        /* Cloudflare Error Details Styling */
+        .cf-error-details {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            color: var(--text-color);
+            box-shadow: 0 8px 32px var(--shadow-color);
+        }
+
+        .cf-error-details h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            text-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .cf-error-details p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            color: var(--text-color);
+        }
+
+        .cf-error-details ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cf-error-details li {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .cf-error-details li:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        /* Responsive design for Cloudflare error details */
+        @media (max-width: 768px) {
+            .cf-error-details {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .cf-error-details h1 {
+                font-size: 1.5rem;
+            }
+
+            .cf-error-details p {
+                font-size: 1rem;
+            }
+
+            .cf-error-details li {
+                font-size: 0.9rem;
+                padding: 10px 14px;
+            }
+        }
+
 
     </style>
 </head>
