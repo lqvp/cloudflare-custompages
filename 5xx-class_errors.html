@@ -130,18 +130,6 @@
             }
         }
 
-        .error-code {
-            font-size: 8rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--color-accent), var(--color-tertiary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 8px var(--shadow-color);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
@@ -406,6 +394,15 @@
             padding-left: 15px;
             padding-right: 15px;
         }
+
+        .cloudflare-error-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -424,9 +421,6 @@
                 <span class="status-text">サーバーエラーが発生しました</span>
             </div>
 
-            <!-- Error code -->
-            <div class="error-code">::CLOUDFLARE_ERROR_500S_BOX::</div>
-
             <!-- Error title -->
             <h1 class="error-title">サーバーエラーが発生しました</h1>
 
@@ -439,10 +433,6 @@
             <!-- Error details -->
             <div class="error-details">
                 <div class="detail-item">
-                    <span class="detail-label">エラーコード:</span>
-                    <span class="detail-value">::CLOUDFLARE_ERROR_500S_BOX::</span>
-                </div>
-                <div class="detail-item">
                     <span class="detail-label">Location:</span>
                     <span class="detail-value">::GEO::</span>
                 </div>
@@ -454,6 +444,11 @@
                     <span class="detail-label">IPアドレス:</span>
                     <span class="detail-value">::CLIENT_IP::</span>
                 </div>
+            </div>
+
+            <!-- Cloudflare Error Details -->
+            <div class="cloudflare-error-details">
+                ::CLOUDFLARE_ERROR_500S_BOX::
             </div>
 
             <!-- Action buttons -->
@@ -484,7 +479,7 @@
 
             <!-- Footer -->
             <div class="footer">
-                <p>&copy; {{cf_timestamp_year}} <a href="/" target="_blank">misskey.vip</a>.All rights reserved.</p>
+                <p>&copy; 2025 <a href="/" target="_blank">misskey.vip</a>.All rights reserved.</p>
             </div>
         </div>
     </div>
