@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{cf_error_code}} - {{cf_error_message}}</title>
+    <title>サーバーエラー - 5XX エラー</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -425,10 +425,10 @@
             </div>
 
             <!-- Error code -->
-            <div class="error-code">{{cf_error_code}}</div>
+            <div class="error-code">::CLOUDFLARE_ERROR_500S_BOX::</div>
 
             <!-- Error title -->
-            <h1 class="error-title">{{cf_error_message}}</h1>
+            <h1 class="error-title">サーバーエラーが発生しました</h1>
 
             <!-- Error message -->
             <p class="error-message">
@@ -440,23 +440,19 @@
             <div class="error-details">
                 <div class="detail-item">
                     <span class="detail-label">エラーコード:</span>
-                    <span class="detail-value">{{cf_error_code}}</span>
+                    <span class="detail-value">::CLOUDFLARE_ERROR_500S_BOX::</span>
                 </div>
                 <div class="detail-item">
-                    <span class="detail-label">エラータイプ:</span>
-                    <span class="detail-value">{{cf_error_type}}</span>
+                    <span class="detail-label">Location:</span>
+                    <span class="detail-value">::GEO::</span>
                 </div>
                 <div class="detail-item">
                     <span class="detail-label">リクエストID:</span>
-                    <span class="detail-value">{{cf_ray_id}}</span>
+                    <span class="detail-value">::RAY_ID::</span>
                 </div>
                 <div class="detail-item">
-                    <span class="detail-label">発生時刻:</span>
-                    <span class="detail-value">{{cf_timestamp}}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">ホスト:</span>
-                    <span class="detail-value">{{cf_host}}</span>
+                    <span class="detail-label">IPアドレス:</span>
+                    <span class="detail-value">::CLIENT_IP::</span>
                 </div>
             </div>
 
@@ -655,3 +651,4 @@
     </script>
 </body>
 </html>
+
