@@ -395,14 +395,7 @@
             padding-right: 15px;
         }
 
-        .cloudflare-error-details {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-        }
+
     </style>
 </head>
 <body>
@@ -430,6 +423,9 @@
                 しばらく時間をおいてから再度お試しください。
             </p>
 
+            <!-- Cloudflare Error Details -->
+            ::CLOUDFLARE_ERROR_500S_BOX::
+
             <!-- Error details -->
             <div class="error-details">
                 <div class="detail-item">
@@ -444,11 +440,6 @@
                     <span class="detail-label">IPアドレス:</span>
                     <span class="detail-value">::CLIENT_IP::</span>
                 </div>
-            </div>
-
-            <!-- Cloudflare Error Details -->
-            <div class="cloudflare-error-details">
-                ::CLOUDFLARE_ERROR_500S_BOX::
             </div>
 
             <!-- Action buttons -->
