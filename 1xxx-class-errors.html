@@ -89,11 +89,9 @@
         .title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
         .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
         
-        .guidance-text { color: var(--text-secondary); margin-bottom: 20px; font-size: 1rem; }
+        .guidance-text { color: var(--text-secondary); margin-top: 30px; font-size: 1rem; }
         
-        ::CLOUDFLARE_ERROR_1000S_BOX::
-
-        .details-box { margin: 30px 0; background: rgba(255, 255, 255, 0.5); border-radius: 16px; border: 1px solid var(--glass-border); overflow: hidden; }
+        .details-box { margin: 20px 0; background: rgba(255, 255, 255, 0.5); border-radius: 16px; border: 1px solid var(--glass-border); overflow: hidden; }
         .details-summary { cursor: pointer; font-weight: 600; color: var(--text-secondary); list-style: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: color 0.3s ease; padding: 25px; }
         .details-summary::-webkit-details-marker { display: none; }
         .details-summary:hover { color: var(--text-primary); }
@@ -156,6 +154,8 @@
             </div>
             <h1 class="title">リクエストを完了できません</h1>
             <p class="subtitle">サーバーまたはネットワークの構成に問題があるため、リクエストを処理できませんでした。</p>
+
+            ::CLOUDFLARE_ERROR_1000S_BOX::
 
             <p class="guidance-text">問題が解決しない場合、サイト管理者へのお問い合わせの際に、以下の情報をお伝えいただくとスムーズです。</p>
             
