@@ -3,23 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>セキュリティチェックを実行中 - Under Attack Mode</title>
+    <title>アクセスが制限されています - 国・地域ブロック</title>
     <meta name="robots" content="noindex, nofollow" />
     <style>
       :root {
-        /* Mapped from original under_attack_mode page */
-        --color-light-pink: #ede5d8; /* --color-accent-light */
-        --color-brown: #6a8359; /* --color-primary-green */
-        --color-dark-brown: #3a322c; /* --text-primary */
-        --color-pale-pink: #f2ece7; /* --color-background */
-        --text-primary: var(--color-dark-brown);
-        --text-secondary: #5c5148;
-        --background-gradient-start: #f2ece7;
-        --background-gradient-end: #ede5d8;
-        --glass-bg: rgba(242, 236, 231, 0.7);
-        --glass-border: rgba(159, 143, 124, 0.3);
-        --shadow-soft: rgba(106, 131, 89, 0.1);
-        --shadow-medium: rgba(106, 131, 89, 0.15);
+        --color-dark-blue: #0d222f;
+        --color-bright-pink: #f178a1;
+        --color-light-pink: #f1c8d6;
+        --color-dark-gray: #4d5963;
+
+        /* Mapping to template */
+        --color-light-pink-bg: var(--color-light-pink); /* For shapes */
+        --color-brown: var(--color-bright-pink); /* Main Accent */
+        --color-dark-brown: var(--color-dark-blue); /* Main Text */
+        --color-pale-pink: var(--color-dark-gray); /* For shapes */
+        --text-primary: #ffffff;
+        --text-secondary: #f1c8d6;
+        --background-gradient-start: var(--color-dark-blue);
+        --background-gradient-end: #1a3a4a;
+        --glass-bg: rgba(77, 89, 99, 0.2);
+        --glass-border: rgba(241, 200, 214, 0.3);
+        --shadow-soft: rgba(0, 0, 0, 0.2);
+        --shadow-medium: rgba(0, 0, 0, 0.3);
       }
 
       * {
@@ -59,8 +64,8 @@
       .shape {
         position: absolute;
         border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        background: var(--color-light-pink);
-        opacity: 0.3;
+        background: var(--color-light-pink-bg);
+        opacity: 0.1;
         animation: morph-and-float 30s infinite ease-in-out;
       }
 
@@ -70,7 +75,6 @@
         top: -50px;
         left: -100px;
         animation-delay: -5s;
-        background-color: #9f8f7c; /* From original */
       }
 
       .shape:nth-child(2) {
@@ -155,6 +159,7 @@
         width: 60px;
         height: 60px;
         color: var(--color-brown);
+        stroke: var(--color-brown);
         stroke-width: 1.5;
         animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
       }
@@ -178,38 +183,66 @@
 
       .title {
         font-family: Georgia, "Times New Roman", Times, serif;
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: 700;
-        margin-bottom: 12px;
+        margin-bottom: 20px;
         color: var(--text-primary);
       }
 
-      .subtitle {
-        font-size: 1.1rem;
+      .message {
+        font-size: 1.2rem;
         line-height: 1.7;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
         color: var(--text-secondary);
         max-width: 550px;
         margin-left: auto;
         margin-right: auto;
       }
 
-      .challenge-box {
-        margin-bottom: 30px;
-        min-height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .info-box {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
+        text-align: left;
       }
 
-      #challenge-form {
-        display: none;
+      .info-box h3 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--text-primary);
       }
-      .challenge-box .main-wrapper h1,
-      .challenge-box .main-wrapper h2#challenge-running,
-      .challenge-box .main-wrapper #challenge-body-text,
-      .challenge-box .footer {
-        display: none;
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        font-size: 1rem;
+      }
+
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px 15px;
+        border-radius: 10px;
+      }
+
+      .info-item span:first-child {
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .info-item span:last-child {
+        font-family: monospace;
+        background: rgba(241, 120, 161, 0.2);
+        color: var(--color-bright-pink);
+        padding: 5px 8px;
+        border-radius: 6px;
+        user-select: all;
       }
 
       .footer {
@@ -223,12 +256,12 @@
         color: var(--text-primary);
         font-weight: 500;
         text-decoration: none;
-        border-bottom: 1px solid var(--color-pale-pink);
+        border-bottom: 1px solid var(--color-light-pink);
         transition: all 0.3s ease;
       }
 
       .footer a:hover {
-        border-bottom-color: var(--color-brown);
+        border-bottom-color: var(--color-bright-pink);
       }
 
       @media (max-width: 768px) {
@@ -241,7 +274,7 @@
         .title {
           font-size: 2.2rem;
         }
-        .subtitle {
+        .message {
           font-size: 1rem;
         }
       }
@@ -265,15 +298,31 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
           </svg>
         </div>
-        <h1 class="title">セキュリティチェックを実行中</h1>
-        <p class="subtitle">
-          サイトの安全性を確保するため、接続を確認しています。このプロセスは自動で行われ、数秒で完了します。
+        <h1 class="title">アクセスが制限されています</h1>
+        <p class="message">
+          お客様の国・地域からのアクセスは、セキュリティポリシーにより制限されています。
         </p>
 
-        <div class="challenge-box">::CF_WIDGET_BOX::</div>
+        <div class="info-box">
+          <h3>詳細情報</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span>あなたのIPアドレス</span>
+              <span id="ip-address">::IP_ADDRESS::</span>
+            </div>
+            <div class="info-item">
+              <span>ブロックされた国・地域</span>
+              <span id="country-name">::COUNTRY_NAME::</span>
+            </div>
+          </div>
+        </div>
 
         <div class="footer">
           <p>
@@ -284,5 +333,22 @@
         </div>
       </div>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function sanitizeToken(element, fallbackText = "N/A") {
+          if (!element || element.textContent.includes("::")) {
+            if (element) {
+              element.textContent = fallbackText;
+            }
+            return null;
+          }
+          return element.textContent;
+        }
+
+        sanitizeToken(document.getElementById("ip-address"), "非公開");
+        sanitizeToken(document.getElementById("country-name"), "不明");
+      });
+    </script>
   </body>
 </html>

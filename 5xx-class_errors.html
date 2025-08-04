@@ -4,40 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>サーバーエラー - 5XX エラー</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <style>
       :root {
-        /* Pink Color Palette from the image */
-        --color-primary: #eccdd2;
-        --color-secondary: #d5ece2;
-        --color-tertiary: #e2ddde;
-        --color-background: #f3e8e8;
-
-        /* Text colors for better contrast */
-        --text-primary: #2c1810;
-        --text-secondary: #4a3429;
-        --text-muted: #6b4f3f;
-        --text-light: #8a6d5a;
-
-        /* Accent colors */
-        --accent-pink: #dfa9c2;
-        --accent-mint: #b8d5c7;
-        --accent-gray: #c8c4c5;
-
-        /* Shadows and effects */
+        /* Mapped from original 5xx page */
+        --color-light-pink: #eccdd2;
+        --color-brown: #4a3429;
+        --color-dark-brown: #2c1810;
+        --color-pale-pink: #f3e8e8;
+        --text-primary: var(--color-dark-brown);
+        --text-secondary: #6b4f3f;
+        --background-gradient-start: #f3e8e8;
+        --background-gradient-end: #e2ddde;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(236, 205, 210, 0.5);
         --shadow-soft: rgba(44, 24, 16, 0.08);
         --shadow-medium: rgba(44, 24, 16, 0.12);
-        --shadow-strong: rgba(44, 24, 16, 0.16);
-
-        /* Glass effects */
-        --glass-bg: rgba(255, 255, 255, 0.85);
-        --glass-border: rgba(236, 205, 210, 0.3);
-        --glass-shadow: rgba(44, 24, 16, 0.06);
       }
 
       * {
@@ -47,14 +28,14 @@
       }
 
       body {
-        font-family: "Inter", sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+          "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
         background: linear-gradient(
           135deg,
-          var(--color-background) 0%,
-          var(--color-primary) 25%,
-          var(--color-secondary) 50%,
-          var(--color-tertiary) 75%,
-          var(--color-background) 100%
+          var(--background-gradient-start) 0%,
+          var(--background-gradient-end) 100%
         );
         color: var(--text-primary);
         min-height: 100vh;
@@ -63,8 +44,7 @@
         line-height: 1.6;
       }
 
-      /* Sophisticated background pattern */
-      .bg-pattern {
+      .bg-shapes {
         position: fixed;
         top: 0;
         left: 0;
@@ -72,71 +52,68 @@
         height: 100%;
         pointer-events: none;
         z-index: 1;
-        opacity: 0.4;
+        overflow: hidden;
       }
 
-      .pattern-circle {
+      .shape {
         position: absolute;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          var(--color-primary) 0%,
-          transparent 70%
-        );
-        animation: float 25s infinite ease-in-out;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        background: var(--color-light-pink);
+        opacity: 0.3;
+        animation: morph-and-float 30s infinite ease-in-out;
       }
 
-      .pattern-circle:nth-child(1) {
+      .shape:nth-child(1) {
+        width: 400px;
+        height: 400px;
+        top: -50px;
+        left: -100px;
+        animation-delay: -5s;
+      }
+
+      .shape:nth-child(2) {
         width: 300px;
         height: 300px;
-        top: 10%;
-        left: 5%;
-        animation-delay: 0s;
+        top: 50%;
+        right: -150px;
+        background-color: #d5ece2; /* From original */
+        animation-delay: -15s;
+        animation-duration: 40s;
       }
 
-      .pattern-circle:nth-child(2) {
-        width: 200px;
-        height: 200px;
-        top: 60%;
-        right: 10%;
-        background: radial-gradient(
-          circle,
-          var(--color-secondary) 0%,
-          transparent 70%
-        );
-        animation-delay: -8s;
+      .shape:nth-child(3) {
+        width: 250px;
+        height: 250px;
+        bottom: -80px;
+        left: 20%;
+        background-color: var(--color-brown);
+        animation-delay: -25s;
       }
 
-      .pattern-circle:nth-child(3) {
-        width: 150px;
-        height: 150px;
-        bottom: 20%;
-        left: 15%;
-        background: radial-gradient(
-          circle,
-          var(--color-tertiary) 0%,
-          transparent 70%
-        );
-        animation-delay: -16s;
-      }
-
-      @keyframes float {
+      @keyframes morph-and-float {
         0%,
         100% {
-          transform: translateY(0px) rotate(0deg) scale(1);
+          transform: translateY(0) rotate(0deg) scale(1);
+          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
         }
-        33% {
-          transform: translateY(-30px) rotate(120deg) scale(1.1);
+        25% {
+          transform: translateY(-40px) rotate(90deg) scale(1.1);
+          border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
         }
-        66% {
-          transform: translateY(-15px) rotate(240deg) scale(0.9);
+        50% {
+          transform: translateY(20px) rotate(180deg) scale(0.9);
+          border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        }
+        75% {
+          transform: translateY(-20px) rotate(270deg) scale(1.05);
+          border-radius: 30% 70% 50% 50% / 30% 30% 70% 70%;
         }
       }
 
       .container {
         position: relative;
         z-index: 2;
-        max-width: 1200px;
+        max-width: 900px;
         margin: 0 auto;
         padding: 40px 20px;
         min-height: 100vh;
@@ -146,47 +123,25 @@
         align-items: center;
       }
 
-      .error-card {
+      .main-card {
         background: var(--glass-bg);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
         border: 1px solid var(--glass-border);
         border-radius: 32px;
-        padding: 80px 60px;
+        padding: 70px 60px;
         text-align: center;
-        box-shadow:
-          0 32px 64px var(--glass-shadow),
-          0 8px 16px var(--shadow-soft),
-          inset 0 1px 0 rgba(255, 255, 255, 0.8);
-        animation: slideInUp 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        box-shadow: 0 32px 64px var(--shadow-soft);
+        animation: fadeInScale 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         opacity: 0;
-        transform: translateY(40px);
-        max-width: 900px;
+        transform: scale(0.95);
         width: 100%;
-        position: relative;
-        overflow: hidden;
       }
 
-      .error-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--color-primary),
-          var(--color-secondary),
-          var(--color-tertiary)
-        );
-        border-radius: 32px 32px 0 0;
-      }
-
-      @keyframes slideInUp {
+      @keyframes fadeInScale {
         to {
           opacity: 1;
-          transform: translateY(0);
+          transform: scale(1);
         }
       }
 
@@ -195,18 +150,7 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
-        margin-bottom: 40px;
-        padding: 16px 24px;
-        background: linear-gradient(
-          135deg,
-          var(--color-primary),
-          var(--color-secondary)
-        );
-        border-radius: 50px;
-        box-shadow: 0 4px 12px var(--shadow-soft);
-        max-width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
+        margin-bottom: 30px;
       }
 
       .status-dot {
@@ -231,389 +175,152 @@
       }
 
       .status-text {
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-weight: 500;
         color: var(--text-primary);
-        letter-spacing: 0.5px;
       }
 
-      .error-title {
-        font-family: "Playfair Display", serif;
-        font-size: 3.5rem;
-        font-weight: 600;
-        margin-bottom: 24px;
+      .title {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
         color: var(--text-primary);
-        line-height: 1.2;
-        letter-spacing: -0.02em;
-        text-shadow: 0 2px 4px var(--shadow-soft);
       }
 
-      .error-message {
-        font-size: 1.3rem;
-        font-weight: 400;
+      .message {
+        font-size: 1.2rem;
         line-height: 1.7;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
         color: var(--text-secondary);
-        max-width: 600px;
+        max-width: 550px;
         margin-left: auto;
         margin-right: auto;
       }
 
-      .action-buttons {
-        display: flex;
-        gap: 24px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 50px;
-      }
-
-      .btn {
-        padding: 18px 36px;
-        border: none;
-        border-radius: 50px;
-        font-size: 1.05rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        position: relative;
-        overflow: hidden;
-        letter-spacing: 0.3px;
-        box-shadow: 0 4px 12px var(--shadow-soft);
-      }
-
-      .btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.3),
-          transparent
-        );
-        transition: left 0.6s;
-      }
-
-      .btn:hover::before {
-        left: 100%;
-      }
-
-      .btn-primary {
-        background: linear-gradient(
-          135deg,
-          var(--accent-pink),
-          var(--color-primary)
-        );
-        color: var(--text-primary);
-        box-shadow: 0 8px 24px rgba(223, 169, 194, 0.3);
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(223, 169, 194, 0.4);
-      }
-
-      .btn-secondary {
-        background: var(--glass-bg);
-        color: var(--text-primary);
-        border: 2px solid var(--glass-border);
-        backdrop-filter: blur(20px);
-      }
-
-      .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.95);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px var(--shadow-medium);
-      }
-
-      /* Cloudflare Error Details Styling */
       .cf-error-details {
-        background: linear-gradient(
-          135deg,
-          var(--color-primary),
-          var(--color-secondary)
-        );
+        background: rgba(255, 255, 255, 0.5);
         border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 40px;
-        margin: 40px 0;
-        text-align: center;
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
         color: var(--text-primary);
-        box-shadow:
-          0 16px 32px var(--glass-shadow),
-          0 4px 8px var(--shadow-soft);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .cf-error-details::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(
-          90deg,
-          var(--accent-pink),
-          var(--accent-mint)
-        );
       }
 
       .cf-error-details h1 {
-        font-family: "Playfair Display", serif;
-        font-size: 2.2rem;
-        font-weight: 600;
-        margin-bottom: 20px;
-        color: var(--text-primary);
-        text-shadow: 0 2px 4px var(--shadow-soft);
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.8rem;
+        margin-bottom: 15px;
       }
 
       .cf-error-details p {
-        font-size: 1.2rem;
-        line-height: 1.7;
-        margin-bottom: 30px;
-        color: var(--text-secondary);
+        line-height: 1.6;
       }
 
-      .cf-error-details ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+      .actions {
+        margin-top: 40px;
         display: flex;
-        flex-direction: column;
-        gap: 16px;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
       }
 
-      .cf-error-details li {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 16px 20px;
-        font-size: 1rem;
-        font-weight: 500;
-        color: var(--text-primary);
+      .btn {
+        background: transparent;
+        border: 2px solid var(--color-brown);
+        color: var(--color-brown);
+        padding: 12px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 8px var(--shadow-soft);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
-      .cf-error-details li:hover {
-        background: rgba(255, 255, 255, 0.95);
+      .btn:hover {
+        background: var(--color-brown);
+        color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px var(--shadow-medium);
+      }
+
+      .btn-primary {
+        background: var(--color-brown);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: var(--color-dark-brown);
+        border-color: var(--color-dark-brown);
       }
 
       .footer {
-        margin-top: 60px;
+        margin-top: 50px;
         text-align: center;
-        color: var(--text-muted);
-        font-size: 1rem;
-        font-weight: 400;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
       }
 
       .footer a {
         color: var(--text-primary);
-        text-decoration: none;
-        border-bottom: 2px solid transparent;
-        transition: all 0.3s ease;
         font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px solid var(--color-pale-pink);
+        transition: all 0.3s ease;
       }
 
       .footer a:hover {
-        border-bottom-color: var(--accent-pink);
-        color: var(--accent-pink);
-      }
-      .color-swatch {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 3px solid rgba(255, 255, 255, 0.8);
-        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        cursor: pointer;
-        box-shadow: 0 4px 12px var(--shadow-soft);
-        position: relative;
+        border-bottom-color: var(--color-brown);
       }
 
-      .color-swatch:hover {
-        transform: scale(1.3) rotate(15deg);
-        box-shadow: 0 8px 24px var(--shadow-medium);
-      }
-
-      .color-1 {
-        background: var(--color-primary);
-      }
-      .color-2 {
-        background: var(--color-secondary);
-      }
-      .color-3 {
-        background: var(--color-tertiary);
-      }
-      .color-4 {
-        background: var(--color-background);
-      }
-
-      /* Responsive design */
       @media (max-width: 768px) {
         .container {
-          padding: 20px 15px;
+          padding: 20px;
         }
-
-        .error-card {
-          padding: 50px 30px;
-          border-radius: 24px;
+        .main-card {
+          padding: 40px 30px;
         }
-
-        .error-title {
-          font-size: 2.5rem;
+        .title {
+          font-size: 2.2rem;
         }
-
-        .error-message {
-          font-size: 1.1rem;
+        .message {
+          font-size: 1rem;
         }
-
-        .action-buttons {
+        .actions {
           flex-direction: column;
           align-items: center;
         }
-
         .btn {
           width: 100%;
-          max-width: 320px;
+          max-width: 300px;
           justify-content: center;
-        }
-
-        .cf-error-details {
-          padding: 30px 20px;
-          margin: 30px 0;
-        }
-
-        .cf-error-details h1 {
-          font-size: 1.8rem;
-        }
-
-        .cf-error-details p {
-          font-size: 1.1rem;
-        }
-
-        .cf-error-details li {
-          font-size: 0.95rem;
-          padding: 14px 16px;
-        }
-      }
-
-      /* Loading animation */
-      .loading-dots {
-        display: inline-flex;
-        gap: 6px;
-      }
-
-      .loading-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: currentColor;
-        animation: loading 1.4s infinite ease-in-out;
-      }
-
-      .loading-dot:nth-child(1) {
-        animation-delay: -0.32s;
-      }
-      .loading-dot:nth-child(2) {
-        animation-delay: -0.16s;
-      }
-
-      @keyframes loading {
-        0%,
-        80%,
-        100% {
-          transform: scale(0);
-        }
-        40% {
-          transform: scale(1);
-        }
-      }
-
-      /* Enhanced hover effects */
-      .error-card:hover {
-        transform: translateY(-8px);
-        box-shadow:
-          0 40px 80px var(--glass-shadow),
-          0 12px 24px var(--shadow-soft),
-          inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      }
-
-      /* Sophisticated animations */
-      @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.9);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      .fade-in-scale {
-        animation: fadeInScale 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-      }
-
-      /* Accessibility improvements */
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-
-      /* High contrast mode support */
-      @media (prefers-contrast: high) {
-        :root {
-          --text-primary: #000000;
-          --text-secondary: #1a1a1a;
-          --glass-bg: rgba(255, 255, 255, 0.95);
         }
       }
     </style>
   </head>
   <body>
-    <!-- Sophisticated background pattern -->
-    <div class="bg-pattern">
-      <div class="pattern-circle"></div>
-      <div class="pattern-circle"></div>
-      <div class="pattern-circle"></div>
+    <div class="bg-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
     </div>
 
     <div class="container">
-      <div class="error-card">
-        <!-- Status indicator -->
+      <div class="main-card">
         <div class="status-indicator">
           <div class="status-dot"></div>
           <span class="status-text">サーバーエラーが発生しました</span>
         </div>
 
-        <!-- Error title -->
-        <h1 class="error-title">サーバーエラーが発生しました</h1>
-
-        <!-- Error message -->
-        <p class="error-message">
-          申し訳ございませんが、サーバーで問題が発生しました。
-          しばらく時間をおいてから再度お試しください。
+        <h1 class="title">サーバーで問題が発生しました</h1>
+        <p class="message">
+          申し訳ございませんが、現在リクエストを処理できません。しばらく時間をおいてから再度お試しください。
         </p>
 
-        <!-- Cloudflare Error Details -->
         ::CLOUDFLARE_ERROR_500S_BOX::
 
-        <!-- Action buttons -->
-        <div class="action-buttons">
+        <div class="actions">
           <button class="btn btn-primary" onclick="window.location.reload()">
             <svg
               width="18"
@@ -622,6 +329,8 @@
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
               <path
                 d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
@@ -634,7 +343,7 @@
             </svg>
             ページを再読み込み
           </button>
-          <a href="https://google.com" class="btn btn-secondary">
+          <a href="/" class="btn">
             <svg
               width="18"
               height="18"
@@ -642,30 +351,16 @@
               fill="none"
               stroke="currentColor"
               stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
               <polyline points="9,22 9,12 15,12 15,22"></polyline>
             </svg>
             ホームに戻る
           </a>
-          <button class="btn btn-secondary" onclick="showContactInfo()">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-              ></path>
-            </svg>
-            サポートに連絡
-          </button>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
           <p>
             &copy; 2025
@@ -677,233 +372,6 @@
     </div>
 
     <script>
-      // Enhanced interactivity and animations
-      document.addEventListener("DOMContentLoaded", function () {
-        // Add loading animation to buttons
-        const buttons = document.querySelectorAll(".btn");
-        buttons.forEach((button) => {
-          button.addEventListener("click", function (e) {
-            if (this.classList.contains("btn-primary")) {
-              this.innerHTML =
-                '<span class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span> 読み込み中...';
-              this.disabled = true;
-            }
-          });
-        });
-
-        // Enhanced color swatch interactions
-        const colorSwatches = document.querySelectorAll(".color-swatch");
-        colorSwatches.forEach((swatch) => {
-          swatch.addEventListener("click", function () {
-            // Create sophisticated ripple effect
-            const ripple = document.createElement("div");
-            ripple.style.cssText = `
-                        position: absolute;
-                        border-radius: 50%;
-                        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-                        transform: scale(0);
-                        animation: ripple 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-                        left: 50%;
-                        top: 50%;
-                        width: 100%;
-                        height: 100%;
-                        margin-left: -50%;
-                        margin-top: -50%;
-                        pointer-events: none;
-                    `;
-
-            this.style.position = "relative";
-            this.appendChild(ripple);
-
-            setTimeout(() => {
-              ripple.remove();
-            }, 800);
-          });
-        });
-
-        // Sophisticated parallax effect
-        let ticking = false;
-        document.addEventListener("mousemove", function (e) {
-          if (!ticking) {
-            requestAnimationFrame(() => {
-              const circles = document.querySelectorAll(".pattern-circle");
-              const mouseX = e.clientX / window.innerWidth;
-              const mouseY = e.clientY / window.innerHeight;
-
-              circles.forEach((circle, index) => {
-                const speed = (index + 1) * 0.3;
-                const x = (mouseX - 0.5) * speed * 30;
-                const y = (mouseY - 0.5) * speed * 30;
-                circle.style.transform = `translate(${x}px, ${y}px)`;
-              });
-              ticking = false;
-            });
-            ticking = true;
-          }
-        });
-
-        // Smooth scroll behavior
-        document.documentElement.style.scrollBehavior = "smooth";
-
-        // Add fade-in animations to elements
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: "0px 0px -50px 0px",
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("fade-in-scale");
-            }
-          });
-        }, observerOptions);
-
-        // Observe elements for animation
-        document
-          .querySelectorAll(".error-card, .btn, .cf-error-details")
-          .forEach((el) => {
-            observer.observe(el);
-          });
-      });
-
-      // Enhanced contact info modal
-      function showContactInfo() {
-        const modal = document.createElement("div");
-        modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(44, 24, 16, 0.4);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                backdrop-filter: blur(8px);
-                animation: fadeIn 0.3s ease-out;
-            `;
-
-        modal.innerHTML = `
-                <div style="
-                    background: var(--glass-bg);
-                    backdrop-filter: blur(30px);
-                    border: 1px solid var(--glass-border);
-                    border-radius: 24px;
-                    padding: 50px;
-                    max-width: 550px;
-                    width: 90%;
-                    text-align: center;
-                    color: var(--text-primary);
-                    box-shadow: 0 32px 64px var(--glass-shadow);
-                    animation: slideInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-                    position: relative;
-                ">
-                    <div style="
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        height: 4px;
-                        background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-                        border-radius: 24px 24px 0 0;
-                    "></div>
-                    <h3 style="
-                        margin-bottom: 24px; 
-                        font-size: 1.8rem; 
-                        font-family: 'Playfair Display', serif;
-                        font-weight: 600;
-                        color: var(--text-primary);
-                    ">サポートに連絡</h3>
-                    <p style="
-                        margin-bottom: 32px; 
-                        line-height: 1.7;
-                        color: var(--text-secondary);
-                        font-size: 1.1rem;
-                    ">
-                        エラーが継続して発生する場合は、以下の方法でサポートチームにお問い合わせください。
-                    </p>
-                    <div style="
-                        margin-bottom: 24px;
-                        padding: 16px;
-                        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-                        border-radius: 12px;
-                        color: var(--text-primary);
-                        font-weight: 500;
-                    ">
-                        <strong>メール:</strong> support@misskey.vip
-                    </div>
-                    <div style="
-                        margin-bottom: 32px;
-                        padding: 12px 16px;
-                        background: var(--glass-bg);
-                        border: 1px solid var(--glass-border);
-                        border-radius: 8px;
-                        color: var(--text-secondary);
-                    ">
-                        <strong>エラーコード:</strong> {{cf_error_code}}
-                    </div>
-                    <button onclick="this.closest('div[style*=\'position: fixed\']').remove()" 
-                            style="
-                                background: linear-gradient(135deg, var(--accent-pink), var(--color-primary));
-                                color: var(--text-primary);
-                                border: none;
-                                padding: 14px 28px;
-                                border-radius: 25px;
-                                cursor: pointer;
-                                font-weight: 500;
-                                font-size: 1rem;
-                                transition: all 0.3s ease;
-                                box-shadow: 0 4px 12px var(--shadow-soft);
-                            "
-                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px var(--shadow-medium)'"
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px var(--shadow-soft)'">
-                        閉じる
-                    </button>
-                </div>
-            `;
-
-        document.body.appendChild(modal);
-
-        // Close modal on background click
-        modal.addEventListener("click", function (e) {
-          if (e.target === modal) {
-            modal.style.animation = "fadeOut 0.3s ease-in";
-            setTimeout(() => modal.remove(), 300);
-          }
-        });
-
-        // Add CSS for modal animations
-        if (!document.querySelector("#modal-styles")) {
-          const style = document.createElement("style");
-          style.id = "modal-styles";
-          style.textContent = `
-                    @keyframes fadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-                    @keyframes fadeOut {
-                        from { opacity: 1; }
-                        to { opacity: 0; }
-                    }
-                `;
-          document.head.appendChild(style);
-        }
-      }
-
-      // Add CSS for ripple animation
-      const style = document.createElement("style");
-      style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-      document.head.appendChild(style);
-
       // Auto-refresh functionality with user interaction detection
       let refreshCountdown = 30;
       let userInteracted = false;
@@ -919,15 +387,13 @@
       }, 1000);
 
       // Cancel auto-refresh if user interacts
-      document.addEventListener("click", () => {
+      const cancelRefresh = () => {
         userInteracted = true;
         clearInterval(refreshTimer);
-      });
+      };
 
-      document.addEventListener("keydown", () => {
-        userInteracted = true;
-        clearInterval(refreshTimer);
-      });
+      document.addEventListener("click", cancelRefresh);
+      document.addEventListener("keydown", cancelRefresh);
     </script>
   </body>
 </html>

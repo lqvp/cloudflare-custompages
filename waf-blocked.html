@@ -6,15 +6,20 @@
     <title>アクセスがブロックされました</title>
     <meta name="robots" content="noindex, nofollow" />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap");
-
       :root {
-        --primary-dark: #182937;
-        --accent-pink: #ff2969;
-        --secondary-gray: #313c47;
-        --accent-gold: #b49e55;
-        --text-light: #ffffff;
-        --text-muted: #a0a0a0;
+        /* Mapped from original waf-blocked page */
+        --color-light-pink: #ff2969;
+        --color-brown: #b49e55;
+        --color-dark-brown: #ffffff;
+        --color-pale-pink: #313c47;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --background-gradient-start: #182937;
+        --background-gradient-end: #1f2f3e;
+        --glass-bg: rgba(49, 60, 71, 0.85);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --shadow-soft: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.4);
       }
 
       * {
@@ -25,559 +30,352 @@
 
       body {
         font-family:
-          "Inter",
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          "Helvetica Neue",
-          Arial,
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+          "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
           sans-serif;
-        background: var(--primary-dark);
         background: linear-gradient(
           135deg,
-          var(--primary-dark) 0%,
-          #1f2f3e 50%,
-          var(--secondary-gray) 100%
+          var(--background-gradient-start) 0%,
+          var(--background-gradient-end) 100%
         );
+        color: var(--text-primary);
         min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        color: var(--text-light);
         overflow-x: hidden;
         position: relative;
-      }
-
-      body::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background:
-          radial-gradient(
-            circle at 20% 80%,
-            rgba(255, 41, 105, 0.1) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            circle at 80% 20%,
-            rgba(180, 158, 85, 0.1) 0%,
-            transparent 50%
-          );
-        pointer-events: none;
-      }
-
-      .container {
-        background: rgba(49, 60, 71, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 24px;
-        padding: 48px;
-        max-width: 700px;
-        width: 100%;
-        text-align: center;
-        box-shadow:
-          0 25px 50px rgba(0, 0, 0, 0.3),
-          0 0 0 1px rgba(255, 255, 255, 0.05);
-        animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .container::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(
-          90deg,
-          var(--accent-pink),
-          var(--accent-gold),
-          var(--accent-pink)
-        );
-        background-size: 200% 100%;
-        animation: shimmer 3s ease-in-out infinite;
-      }
-
-      @keyframes shimmer {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-      }
-
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(40px) scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-      }
-
-      .warning-icon {
-        width: 100px;
-        height: 100px;
-        margin: 0 auto 32px;
-        background: linear-gradient(135deg, var(--accent-pink), #e61e4d);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        animation: warningPulse 2s ease-in-out infinite;
-        box-shadow:
-          0 0 0 8px rgba(255, 41, 105, 0.2),
-          0 0 0 4px rgba(255, 255, 255, 0.1);
-      }
-
-      @keyframes warningPulse {
-        0%,
-        100% {
-          transform: scale(1);
-          box-shadow:
-            0 0 0 8px rgba(255, 41, 105, 0.2),
-            0 0 0 4px rgba(255, 255, 255, 0.1);
-        }
-        50% {
-          transform: scale(1.05);
-          box-shadow:
-            0 0 0 12px rgba(255, 41, 105, 0.3),
-            0 0 0 6px rgba(255, 255, 255, 0.15);
-        }
-      }
-
-      .warning-icon svg {
-        width: 48px;
-        height: 48px;
-        fill: white;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-      }
-
-      h1 {
-        font-family: "Playfair Display", serif;
-        font-size: 3rem;
-        font-weight: 600;
-        margin-bottom: 16px;
-        background: linear-gradient(135deg, var(--accent-gold), #d4af37);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -0.5px;
-        line-height: 1.2;
-      }
-
-      .subtitle {
-        font-size: 1.25rem;
-        color: var(--text-muted);
-        margin-bottom: 32px;
-        font-weight: 400;
-        line-height: 1.5;
-      }
-
-      .error-code {
-        display: inline-block;
-        background: linear-gradient(135deg, var(--accent-pink), #e61e4d);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 50px;
-        font-weight: 600;
-        margin-bottom: 32px;
-        font-size: 1rem;
-        letter-spacing: 1px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        box-shadow: 0 4px 12px rgba(255, 41, 105, 0.3);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .error-code::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        animation: shimmer 2s infinite;
-      }
-
-      .message {
-        background: rgba(255, 41, 105, 0.1);
-        border: 1px solid rgba(255, 41, 105, 0.2);
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 32px;
-        text-align: left;
-        position: relative;
-        backdrop-filter: blur(10px);
-      }
-
-      .message::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(
-          180deg,
-          var(--accent-pink),
-          var(--accent-gold)
-        );
-        border-radius: 2px;
-      }
-
-      .message h3 {
-        color: var(--accent-pink);
-        margin-bottom: 12px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .message p {
-        line-height: 1.7;
-        color: var(--text-light);
-        margin-bottom: 12px;
-        font-size: 1rem;
-      }
-
-      .message ul {
-        margin-left: 20px;
-        color: var(--text-muted);
-      }
-
-      .message li {
-        margin-bottom: 8px;
         line-height: 1.6;
       }
 
-      .actions {
-        display: flex;
-        gap: 16px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 32px;
-      }
-
-      .btn {
-        padding: 16px 32px;
-        border: none;
-        border-radius: 50px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        cursor: pointer;
-        font-size: 15px;
-        position: relative;
-        overflow: hidden;
-        min-width: 160px;
-        justify-content: center;
-      }
-
-      .btn::before {
-        content: "";
-        position: absolute;
+      .bg-shapes {
+        position: fixed;
         top: 0;
-        left: -100%;
+        left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transition: left 0.5s;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
       }
 
-      .btn:hover::before {
-        left: 100%;
+      .shape {
+        position: absolute;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        background: var(--color-light-pink);
+        opacity: 0.1;
+        animation: morph-and-float 30s infinite ease-in-out;
       }
 
-      .btn-primary {
-        background: linear-gradient(135deg, var(--accent-pink), #e61e4d);
-        color: white;
-        box-shadow: 0 8px 24px rgba(255, 41, 105, 0.3);
+      .shape:nth-child(1) {
+        width: 400px;
+        height: 400px;
+        top: -50px;
+        left: -100px;
+        animation-delay: -5s;
       }
 
-      .btn-primary:hover {
-        background: linear-gradient(135deg, #e61e4d, var(--accent-pink));
-        transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(255, 41, 105, 0.4);
+      .shape:nth-child(2) {
+        width: 300px;
+        height: 300px;
+        top: 50%;
+        right: -150px;
+        background-color: var(--color-pale-pink);
+        animation-delay: -15s;
+        animation-duration: 40s;
       }
 
-      .btn-secondary {
-        background: rgba(180, 158, 85, 0.1);
-        color: var(--accent-gold);
-        border: 2px solid var(--accent-gold);
-        backdrop-filter: blur(10px);
+      .shape:nth-child(3) {
+        width: 250px;
+        height: 250px;
+        bottom: -80px;
+        left: 20%;
+        background-color: var(--color-brown);
+        animation-delay: -25s;
       }
 
-      .btn-secondary:hover {
-        background: var(--accent-gold);
-        color: var(--primary-dark);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(180, 158, 85, 0.3);
+      @keyframes morph-and-float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg) scale(1);
+          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        25% {
+          transform: translateY(-40px) rotate(90deg) scale(1.1);
+          border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+        }
+        50% {
+          transform: translateY(20px) rotate(180deg) scale(0.9);
+          border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        }
+        75% {
+          transform: translateY(-20px) rotate(270deg) scale(1.05);
+          border-radius: 30% 70% 50% 50% / 30% 30% 70% 70%;
+        }
       }
 
-      .btn svg {
-        width: 18px;
-        height: 18px;
-        transition: transform 0.3s ease;
+      .container {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
 
-      .btn:hover svg {
-        transform: scale(1.1);
+      .main-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--glass-border);
+        border-radius: 32px;
+        padding: 70px 60px;
+        text-align: center;
+        box-shadow: 0 32px 64px var(--shadow-soft);
+        animation: fadeInScale 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        opacity: 0;
+        transform: scale(0.95);
+        width: 100%;
       }
 
-      .footer {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        margin-top: 24px;
-        padding-top: 24px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      @keyframes fadeInScale {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
 
-      .footer a {
-        color: var(--accent-gold);
-        text-decoration: none;
-        transition: color 0.3s ease;
+      .icon-header {
+        margin-bottom: 30px;
       }
 
-      .footer a:hover {
-        color: var(--accent-pink);
+      .icon-header svg {
+        width: 60px;
+        height: 60px;
+        color: var(--color-light-pink);
+        stroke-width: 1.5;
+        animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
       }
 
-      .debug-info {
-        font-family: "JetBrains Mono", "Courier New", monospace;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        margin-top: 20px;
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.1);
+        }
+        80% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .title {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+      }
+
+      .message {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        margin-bottom: 30px;
+        color: var(--text-secondary);
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .troubleshooting-box {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
         text-align: left;
-        backdrop-filter: blur(10px);
       }
 
-      .debug-info .debug-item {
-        margin-bottom: 8px;
+      .troubleshooting-box h3 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--color-light-pink);
+      }
+
+      .troubleshooting-box ul {
+        list-style-position: inside;
+        padding-left: 0;
+      }
+
+      .troubleshooting-box li {
+        margin-bottom: 10px;
+      }
+
+      .info-box {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
+        text-align: left;
+      }
+
+      .info-box h3 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--color-brown);
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        font-size: 1rem;
+      }
+
+      .info-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px 0;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px 15px;
+        border-radius: 10px;
       }
 
-      .debug-item .label {
-        font-weight: 600;
-        color: var(--accent-gold);
-        min-width: 100px;
+      .info-item span:first-child {
+        font-weight: 500;
+        color: var(--text-primary);
       }
 
-      .debug-item .value {
-        color: var(--text-light);
-        word-break: break-all;
-        font-family: "JetBrains Mono", "Courier New", monospace;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 4px 8px;
-        border-radius: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+      .info-item span:last-child {
+        font-family: monospace;
+        background: rgba(180, 158, 85, 0.2);
+        color: var(--color-brown);
+        padding: 5px 8px;
+        border-radius: 6px;
+        user-select: all;
+      }
+
+      .footer {
+        margin-top: 50px;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .footer a {
+        color: var(--color-brown);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px solid var(--color-pale-pink);
+        transition: all 0.3s ease;
+      }
+
+      .footer a:hover {
+        border-bottom-color: var(--color-brown);
       }
 
       @media (max-width: 768px) {
         .container {
-          padding: 32px 24px;
-          margin: 16px;
-          border-radius: 20px;
+          padding: 20px;
         }
-
-        h1 {
-          font-size: 2.5rem;
-          letter-spacing: -0.3px;
+        .main-card {
+          padding: 40px 30px;
         }
-
-        .subtitle {
-          font-size: 1.1rem;
+        .title {
+          font-size: 2.2rem;
         }
-
-        .actions {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .btn {
-          width: 100%;
-          max-width: 280px;
-          justify-content: center;
-        }
-
-        .debug-info .debug-item {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 4px;
-        }
-
-        .debug-item .label {
-          min-width: auto;
-        }
-      }
-
-      @media (max-width: 480px) {
-        h1 {
-          font-size: 2rem;
-        }
-
-        .warning-icon {
-          width: 80px;
-          height: 80px;
-        }
-
-        .warning-icon svg {
-          width: 36px;
-          height: 36px;
+        .message {
+          font-size: 1rem;
         }
       }
     </style>
   </head>
   <body>
+    <div class="bg-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+
     <div class="container">
-      <div class="warning-icon">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"
-          />
-        </svg>
-      </div>
-
-      <h1>アクセスがブロックされました</h1>
-      <p class="subtitle">
-        セキュリティシステムによってリクエストが停止されました
-      </p>
-
-      <div class="error-code">ERROR 403</div>
-
-      <div class="message">
-        <h3>⚠️ セキュリティ警告</h3>
-        <p>
-          あなたのリクエストがセキュリティシステムによって検出されました。これはサイトを保護するための自動的な措置です。
+      <div class="main-card">
+        <div class="icon-header">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 2L1 21h22L12 2z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <h1 class="title">アクセスがブロックされました</h1>
+        <p class="message">
+          セキュリティシステムによって、このリクエストはブロックされました。これはサイトを保護するための自動的な措置です。
         </p>
-      </div>
 
-      <div class="actions">
-        <a href="https://google.com" class="btn btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
-          </svg>
-          ホームに戻る
-        </a>
-        <a href="mailto:support@misskey.vip" class="btn btn-secondary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"
-            />
-          </svg>
-          お問い合わせ
-        </a>
-      </div>
+        <div class="troubleshooting-box">
+          <h3>🔧 トラブルシューティング</h3>
+          <p>もしこれが誤検知だと思われる場合は、以下をお試しください：</p>
+          <ul>
+            <li>しばらく時間をおいてから再度アクセスしてみる</li>
+            <li>ブラウザのキャッシュとCookieをクリアする</li>
+            <li>VPNや匿名化ツールを使用している場合は無効にする</li>
+            <li>問題が続く場合はサイト管理者までお問い合わせください</li>
+          </ul>
+        </div>
 
-      <div class="message">
-        <h3>🔧 トラブルシューティング</h3>
-        <p>もしこれが誤検知だと思われる場合は、以下をお試しください：</p>
-        <ul>
-          <li>しばらく時間をおいてから再度アクセスしてみる</li>
-          <li>ブラウザのキャッシュとCookieをクリアする</li>
-          <li>VPNや匿名化ツールを使用している場合は無効にする</li>
-          <li>問題が続く場合はサポートまでお問い合わせください</li>
-        </ul>
-      </div>
+        <div class="info-box">
+          <h3>詳細情報</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span>あなたのIPアドレス</span>
+              <span id="ip-address">::CLIENT_IP::</span>
+            </div>
+            <div class="info-item">
+              <span>Ray ID</span>
+              <span id="ray-id">::RAY_ID::</span>
+            </div>
+          </div>
+        </div>
 
-      <div class="footer">
-        <p>このページはCloudflareによって表示されています</p>
-
-        <div class="debug-info">
-          <div class="debug-item">
-            <span class="label">Ray ID:</span>
-            <span class="value">::RAY_ID::</span>
-          </div>
-          <div class="debug-item">
-            <span class="label">IP Address:</span>
-            <span class="value">::CLIENT_IP::</span>
-          </div>
-          <div class="debug-item">
-            <span class="label">Country:</span>
-            <span class="value">::GEO::</span>
-          </div>
-          <div class="debug-item">
-            <span class="label">Timestamp:</span>
-            <span class="value" id="timestamp"></span>
-          </div>
+        <div class="footer">
+          <p>
+            &copy; 2025
+            <a href="https://misskey.vip" target="_blank">misskey.vip</a>. All
+            rights reserved.
+          </p>
         </div>
       </div>
     </div>
 
     <script>
-      // タイムスタンプを設定
-      document.getElementById("timestamp").textContent =
-        new Date().toISOString();
-
-      // パフォーマンス最適化のため、アニメーションを軽量化
-      let animationId;
-      function startAnimation() {
-        const container = document.querySelector(".container");
-        let startTime = Date.now();
-
-        function animate() {
-          const elapsed = Date.now() - startTime;
-          const scale = 1 + Math.sin(elapsed / 4000) * 0.001;
-          container.style.transform = `scale(${scale})`;
-          animationId = requestAnimationFrame(animate);
+      document.addEventListener("DOMContentLoaded", function () {
+        function sanitizeToken(element, fallbackText = "N/A") {
+          if (!element || element.textContent.includes("::")) {
+            if (element) {
+              element.textContent = fallbackText;
+            }
+            return null;
+          }
+          return element.textContent;
         }
 
-        animate();
-      }
-
-      // ページロード後にアニメーション開始
-      document.addEventListener("DOMContentLoaded", startAnimation);
-
-      // ページを離れる前にアニメーション停止
-      window.addEventListener("beforeunload", () => {
-        if (animationId) {
-          cancelAnimationFrame(animationId);
-        }
-      });
-
-      // ボタンのホバーエフェクト強化
-      document.querySelectorAll(".btn").forEach((btn) => {
-        btn.addEventListener("mouseenter", function () {
-          this.style.transform = "translateY(-3px) scale(1.02)";
-        });
-
-        btn.addEventListener("mouseleave", function () {
-          this.style.transform = "translateY(0) scale(1)";
-        });
+        sanitizeToken(document.getElementById("ip-address"), "非公開");
+        sanitizeToken(document.getElementById("ray-id"), "利用不可");
       });
     </script>
   </body>
