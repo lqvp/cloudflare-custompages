@@ -148,6 +148,40 @@
         #challenge-form {
             display: none;
         }
+
+        /* Styles for Cloudflare injected content */
+        .challenge-box .main-wrapper h1,
+        .challenge-box .main-wrapper h2#challenge-running,
+        .challenge-box .main-wrapper #challenge-body-text {
+            display: none;
+        }
+
+        .challenge-box .main-wrapper {
+            width: 100%;
+        }
+
+        .challenge-box .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .challenge-box .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .challenge-box .footer .ray-id {
+            font-family: monospace;
+        }
+
+        .challenge-box .footer a {
+            color: var(--color-primary-green);
+            font-weight: 500;
+        }
         
         .footer {
             margin-top: 30px;
