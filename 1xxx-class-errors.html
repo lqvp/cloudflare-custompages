@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>リクエストを完了できません - 1XXX Status</title>
     <style>
       :root {
@@ -416,16 +417,53 @@
           gap: 8px;
         }
       }
+
+      /* Reduced motion preference */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+        .main-card {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+
+      /* Skip link */
+      .skip-link {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .skip-link:focus {
+        position: fixed;
+        left: 16px;
+        top: 16px;
+        width: auto;
+        height: auto;
+        padding: 8px 12px;
+        background: #000;
+        color: #fff;
+        border-radius: 6px;
+        z-index: 10000;
+        outline: 2px solid #fff;
+      }
     </style>
   </head>
   <body>
-    <div class="bg-shapes">
+    <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
+    <div class="bg-shapes" aria-hidden="true">
       <div class="shape"></div>
       <div class="shape"></div>
       <div class="shape"></div>
     </div>
 
-    <div class="container">
+    <main id="main" class="container" role="main">
       <div class="main-card">
         <div class="icon-header">
           <svg
@@ -434,6 +472,8 @@
             height="24"
             viewBox="0 0 24 24"
             fill="none"
+            aria-hidden="true"
+            focusable="false"
             stroke-linecap="round"
             stroke-linejoin="round"
           >
@@ -457,29 +497,29 @@
         </div>
 
         <div class="actions">
-          <button class="btn" id="support-btn">サポートに連絡</button>
+          <button class="btn" id="support-btn" type="button">サポートに連絡</button>
         </div>
 
-        <div class="footer">
+        <footer class="footer">
           <p>
             &copy; 2025
-            <a href="https://misskey.vip" target="_blank">misskey.vip</a>. All
+            <a href="https://misskey.vip" target="_blank" rel="noopener noreferrer">misskey.vip</a>. All
             rights reserved.
           </p>
-        </div>
+        </footer>
       </div>
-    </div>
+    </main>
 
     <div class="modal-overlay">
-      <div class="modal-content">
-        <h3>サポートに連絡</h3>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="support-modal-title">
+        <h3 id="support-modal-title">サポートに連絡</h3>
         <p>
           問題が解決しない場合は、以下の連絡先までお問い合わせください。その際、上記のエラー詳細を併せてお伝えいただくと、スムーズに対応できます。
         </p>
         <div class="contact-info">
           <strong>Email:</strong> support@misskey.vip
         </div>
-        <button class="close-btn">閉じる</button>
+        <button class="close-btn" type="button">閉じる</button>
       </div>
     </div>
 
